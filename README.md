@@ -1,3 +1,6 @@
+This is a modification of atorov/react-hooks-p5js to be a single-canvas moving
+fractal autogeneration and display tool using P5 and React
+
 # Using React with p5.js
 
 ![alt application screenshot](https://github.com/atorov/react-hooks-p5js/blob/master/src/assets/demo/screencast.gif)

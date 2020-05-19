@@ -3,9 +3,12 @@ export default function (s) {
     s.dispatch = () => { }
 
     s.setup = () => {
-        s.createCanvas(640, 120)
+        s.createCanvas(640, 600)
         s.colorMode(s.HSB)
+        s.pixelDensity(1)
+        s.background(51)
 
+        /*
         for (let i = 0; i < 6; i++) {
             for (let j = 0; j < s.width; j++) {
                 const hue = s.map(j, 0, s.width - 1, 0, 360)
@@ -20,8 +23,23 @@ export default function (s) {
         }
 
         s.noLoop()
+        */
 
         console.log('::: sketch-2 has been initialized')
+    }
+
+    s.draw = () => {
+        s.loadPixels()
+        for (let y=0; y<s.height; y++) {
+            for (let x=0; x<s.width; x++) {
+                let index = (x + y * s.width) * 4;
+                s.pixels[index + 0] = x
+                s.pixels[index + 1] = s.random(255)
+                s.pixels[index + 2] = y
+                s.pixels[index + 3] = 255
+            }
+        }
+        s.updatePixels()
     }
 
     s.mouseClicked = () => {

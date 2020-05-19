@@ -46,3 +46,5 @@ docs
 .idea/
 stats.json
 .tmp
+*.sw*
+yarn.lock

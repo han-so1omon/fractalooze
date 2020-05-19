@@ -29,7 +29,6 @@ export default function (id = generate()) {
 
         return (
             <div ref={sketchContainer} className="section">
-                <h5>{`P5Wrapper #${id}`}</h5>
             </div>
         )
     }
