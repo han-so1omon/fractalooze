@@ -8,4 +8,4 @@ as well as [pvigier's post](https://pvigier.github.io/2018/05/14/fractal-image-c
 
 # Demos
 ![alt application screenshot](https://github.com/han-so1omon/fractalooze/blob/master/src/assets/samples/monkey-grayscale-animated.gif)
-![alt application screenshot](https://github.com/han-so1omon/fractalooze/blob/master/src/assets/samples/leafbug_palomino-grayscale-animated.gif)
+![alt application screenshot](https://github.com/han-so1omon/fractalooze/blob/master/src/assets/samples/errcsool-grayscale-animated.gif)
