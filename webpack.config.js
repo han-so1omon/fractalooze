@@ -118,10 +118,6 @@ const config = {
                     to: DIST + '/img',
                 },
                 {
-                    from: SRC + '/assets/audio',
-                    to: DIST + '/audio',
-                },
-                {
                     from: SRC + '/assets/samples',
                     to: DIST + '/samples',
                 }
