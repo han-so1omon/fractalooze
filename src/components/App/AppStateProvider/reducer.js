@@ -6,28 +6,33 @@ export default function (state, { type, payload }) {
                 bgndColor: payload,
             }
 
-        case 'SET_PLAY_AUDIO':
+        case 'SET_COMPRESSION_CANVAS':
             return {
                 ...state,
-                playAudio: payload,
+                compressionCanvas: {
+                    show: payload.show,
+                    image: payload.image,
+                    showAnimation: payload.showAnimation,
+                },
+                compressionAnimation: payload.animation,
             }
 
-        case 'SET_SLIDER_VALUE':
+        case 'SET_COMPRESSION_ANIMATION':
             return {
                 ...state,
-                slider: payload,
+                compressionAnimation: payload,
             }
 
-        case 'TOGGLE_PLAY_AUDIO':
-            return {
-                ...state,
-                playAudio: !state.playAudio,
+        case 'PUSH_SAMPLES':
+            if (state.samples == undefined) {
+                state.samples = payload
+            } else {
+                state.samples = state.samples.concat(payload)
             }
 
-        case 'TOGGLE_SKETCH':
             return {
                 ...state,
-                [payload.key]: payload.value,
+                samples: payload,
             }
 
         default:

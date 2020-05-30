@@ -1,4 +1,3 @@
-import { matrix, add, multiply, index } from 'mathjs'
 export default function (s) {
     s.state = { }
     s.dispatch = () => { }
@@ -32,29 +31,29 @@ export default function (s) {
                 ratio: 0,
                 direction: 1,
             },
-            numPts: 100000,
+            numPts: 21000,
             oldPts: [],
         },
     }
 
     s.preload = () => {
-        patterns.fern.img = s.createImage(s.windowWidth/2, s.windowHeight/2)
-        patterns.random.img = s.createImage(s.windowWidth, s.windowHeight)
+        patterns.fern.img = s.createImage(250, 250)
+        patterns.random.img = s.createImage(250, 250)
     }
 
     s.setup = () => {
-        s.createCanvas(s.windowWidth, s.windowHeight)
+        s.createCanvas(600, 600)
         s.colorMode(s.HSB)
         s.pixelDensity(1)
         s.background(91)
         console.log('::: fern sketch has been initialized')
     }
 
+    /*
     s.windowResized = () => {
-        patterns.fern.img.resize(s.windowWidth/2, s.windowHeight/2)
-        patterns.random.img.resize(s.windowWidth, s.windowHeight)
         s.resizeCanvas(s.windowWidth, s.windowHeight)
     }
+    */
 
     function drawPointFern(px, py, img) {
         let index = (px + py * img.width) * 4;
@@ -196,12 +195,15 @@ export default function (s) {
 
     s.draw = () => {
 
+        if (s.state.animation) {
+            console.log('here!')
+        }
         s.clear()
         if (!patterns.fern.init) { initFern(patterns.fern) }
         drawFern(patterns.fern)
-        s.image(patterns.fern.img, s.width/3, s.height/3)
+        s.image(patterns.fern.img, 0, 0)
 
-        drawRandom(patterns.random.img)
-        s.image(patterns.random.img, 0, 0)
+        //drawRandom(patterns.random.img)
+        //s.image(patterns.random.img, 0, 0)
     }
 }

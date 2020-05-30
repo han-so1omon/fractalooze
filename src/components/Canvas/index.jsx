@@ -1,28 +1,53 @@
 import React, { useContext } from 'react'
+import styled from "styled-components"
 
 import { generate } from 'shortid'
 
-import sketchSrc from '../../sketches/barnsley-fern'
+import animationSketchSrc from '../../sketches/animation'
+import compressionImageSrc from '../../sketches/compression-image'
 
 import { AppDispatchContext, AppStateContext } from '../App/AppStateProvider'
 import p5Wrapper from '../P5Wrapper'
 
-const P5Wrapper = p5Wrapper(generate())
+const P5CompressionImageWrapper = p5Wrapper(generate())
+const P5CompressionAnimationWrapper = p5Wrapper(generate())
+
+const Styles = styled.div`
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+`
 
 export default function Canvas() {
     const dispatch = useContext(AppDispatchContext)
-    const { fractalSketch } = useContext(AppStateContext)
+    const {
+        compressionCanvas,
+        compressionAnimation,
+        bgndColor,
+    } = useContext(AppStateContext)
 
+    let animation = undefined
+    if (compressionAnimation) {
+        animation = (
+            <img src={compressionAnimation.path}/>
+        )
+    } else {
+        animation = (
+                <P5CompressionAnimationWrapper
+                    dispatch={dispatch}
+                    sketch={animationSketchSrc}
+                />
+        )
+    }
     return (
-        <div className="section">
-            <div className="section section-content">
-                {fractalSketch && (
-                    <P5Wrapper
-                        dispatch={dispatch}
-                        sketch={sketchSrc}
-                    />
-                )}
+        <Styles>
+            <div className="section-content">
+                { compressionCanvas.showAnimation && animation }
             </div>
-        </div>
+            <div className="section-content">
+                <img src={compressionCanvas.image.path}/>
+            </div>
+        </Styles>
     )
 }

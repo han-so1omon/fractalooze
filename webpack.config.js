@@ -38,8 +38,8 @@ const config = {
         rules: [
             {
                 test: /\.css$/,
-                include: SRC,
-                exclude: EXCLUDE_DEFAULT,
+                //include: SRC,
+                //exclude: EXCLUDE_DEFAULT,
                 use: (() => {
                     if (MODE === 'development') {
                         return [
@@ -71,7 +71,32 @@ const config = {
                 exclude: EXCLUDE_DEFAULT,
                 use: { loader: 'babel-loader' },
             },
-        ],
+            {
+                test: /\.(gif|png|jpe?g|svg)$/i,
+                use: [
+                    'file-loader',
+                    {
+                        loader: 'image-webpack-loader',
+                        options: {
+                            mozjpeg: {
+                                progressive: true,
+                                quality: 65
+                            },
+                            optipng: {
+                                enabled: false,
+                            },
+                            pngquant: {
+                                quality: [0.65, 0.90],
+                                speed: 4
+                            },
+                            gifsicle: {
+                                interlaced: false,
+                            },
+                        },
+                    },
+                ],
+            },
+        ]
     },
     plugins: [
         new webpack.WatchIgnorePlugin(EXCLUDE_DEFAULT),
@@ -96,6 +121,10 @@ const config = {
                     from: SRC + '/assets/audio',
                     to: DIST + '/audio',
                 },
+                {
+                    from: SRC + '/assets/samples',
+                    to: DIST + '/samples',
+                }
             ],
             {
                 ignore: ['.DS_Store'],

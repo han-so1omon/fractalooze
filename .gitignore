@@ -48,3 +48,6 @@ stats.json
 .tmp
 *.sw*
 yarn.lock
+
+# Local Netlify folder
+.netlify
