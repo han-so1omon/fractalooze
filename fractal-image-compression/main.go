@@ -26,7 +26,7 @@ import (
 var (
 	allowedOrigins = []string{
 		//"http://192.168.1.37:5001",
-		"https://fractalooze/netlify.app",
+		"https://fractalooze.netlify.app",
 		"https://errcsool.com/portfolio/fractal-image-compression",
 	}
 	ErrOriginNotAllowed = errors.New("Origin not allowed")
