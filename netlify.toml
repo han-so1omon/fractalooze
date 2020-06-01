@@ -4,7 +4,7 @@
     publish = "build"
 
 [build.environment]
-    GO_IMPORT_PATH = "github.com/han-so1omon/fractalooze/fractal-image-compression/fractal-compress"
+    GO_IMPORT_PATH = "github.com/han-so1omon/fractalooze/fractal-image-compression"
     GO111MODULE = "on"
 
 #TODO add redirects for loose coupling with vendor
