@@ -45,6 +45,7 @@ export default function UploadImg(props) {
                 body: imgBase64,
             }
         )
+        console.log(response)
         let cryptoArr = new Uint8Array(16)
         let body = await response.text()
         let buf = new Buffer(body, 'base64')
