@@ -3,8 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/base64"
+	"errors"
 	"fmt"
-	"io/ioutil"
+	"strings"
 
 	"gonum.org/v1/gonum/mat"
 	"math"
@@ -20,8 +21,25 @@ import (
 	//"context"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"net/http"
 )
+
+var (
+	allowedOrigins = []string{
+		//"http://192.168.1.37:5001",
+		"https://fractalooze/netlify.app",
+		"https://errcsool.com/portfolio/fractal-image-compression",
+	}
+	ErrOriginNotAllowed = errors.New("Origin not allowed")
+)
+
+func isAllowedOrigin(origin string) bool {
+	for _, o := range allowedOrigins {
+		if origin == o {
+			return true
+		}
+	}
+	return false
+}
 
 type candidate struct {
 	direction bool
@@ -437,34 +455,27 @@ func decompress(
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	resp := events.APIGatewayProxyResponse{Headers: make(map[string]string)}
-	resp.Headers["Access-Control-Allow-Origin"] = "*"
+
+	var host string
+	host, ok := request.Headers["Origin"]
+	if !ok {
+		host, ok = request.Headers["origin"]
+	}
+	if !ok || !isAllowedOrigin(host) {
+		return events.APIGatewayProxyResponse{StatusCode: 403}, ErrOriginNotAllowed
+	}
+	resp.Headers["Access-Control-Allow-Origin"] = host
+	//resp.Headers["Access-Control-Allow-Origin"] = "*"
 	resp.Headers["Access-Control-Allow-Headers"] = "*"
-	resp.Headers["Access-Control-Allow-Methods"] = "POST,GET"
-	resp.Headers["Access-Control-Allow-Credentials"] = "*"
+	resp.Headers["Access-Control-Allow-Methods"] = "POST"
+	resp.Headers["Access-Control-Allow-Credentials"] = "true"
 
-	r := http.Request{}
-	r.Header = make(map[string][]string)
-	for k, v := range request.Headers {
-		if k == "content-type" || k == "Content-Type" {
-			r.Header.Set(k, v)
-		}
-	}
-
-	body, err := base64.StdEncoding.DecodeString(request.Body)
-	r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-	if err != nil {
-		resp.StatusCode = 403
-		resp.Body = "Could not read request body"
-		return resp, nil
-	}
-
-	err = r.ParseMultipartForm(0)
-	f, _, err := r.FormFile("image")
+	rawImgBeginIdx := strings.Index(request.Body, ",")
+	body, err := base64.StdEncoding.DecodeString(request.Body[rawImgBeginIdx+1:])
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}
-
-	imgOrig, _, err := image.Decode(f)
+	imgOrig, _, err := image.Decode(bytes.NewReader(body))
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}
@@ -502,6 +513,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		)
 		animation.Image = append(animation.Image, getPalettedImage(iteration, grayPalette))
 	}
+
 	if err := gif.EncodeAll(buffer, &animation); err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}
@@ -513,5 +525,6 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 }
 
 func main() {
+	makeCandidates()
 	lambda.Start(handler)
 }
