@@ -13,7 +13,7 @@ export default {
         image: { file: undefined, path: monkeySampleStatic },
         showAnimation: true,
     },
-    compressionAnimation: { file: undefined, path: monkeySampleAnimated },
+    compressionAnimation: { file: undefined, path: monkeySampleAnimated, isError: false },
     samples: [
         { static: monkeySampleStatic, animation: monkeySampleAnimated },
         { static: leafbugSampleStatic, animation: leafbugSampleAnimated },

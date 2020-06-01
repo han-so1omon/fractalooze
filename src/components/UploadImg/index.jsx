@@ -7,6 +7,15 @@ import { AppDispatchContext, AppStateContext } from '../App/AppStateProvider'
 export default function UploadImg(props) {
     const dispatch = useContext(AppDispatchContext)
 
+    async function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => resolve(reader.result)
+            reader.onerror = error => reject(error)
+        })
+    }
+
     async function onDrop(image) {
         props.closeModal()
         dispatch({
@@ -18,30 +27,34 @@ export default function UploadImg(props) {
                 animation: undefined,
             }
         })
-        let formData = new FormData()
-        formData.append('image', image[0])
-        let response = await fetch("https://fractalooze.netlify.app/.netlify/functions/fractal-compress",{
-            method: 'POST',
-            mode: 'cors',
-            /*
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            */
-            body: formData,
-        })
+        const imgBase64 = await toBase64(image[0])
+        if (imgBase64 instanceof Error) {
+        let compressionAnimation = 
+            dispatch({
+                type: 'SET_COMPRESSION_ANIMATION',
+                payload: { file: undefined, path: undefined, isError: true }
+            })
+            return
+        }
+        let response = await fetch(
+            //"http://192.168.1.23:4567/restapis/ighr1bypdx/test/_user_request_/fractal-compress-func",
+            "http://fractalooze.netlify.app/.netlify/functions/fractal-compress",
+            {
+                method: 'POST',
+                mode: 'cors',
+                body: imgBase64,
+            }
+        )
         let cryptoArr = new Uint8Array(16)
-        let body = await response.json()
-        console.log(body)
-        let buf = new Buffer(body.Response.image, 'base64')
+        let body = await response.text()
+        let buf = new Buffer(body, 'base64')
         let file = new File(
             [buf],
             'animation-' + Math.random().toString(36).substring(7) + '.gif',
             {type:'image/gif'}
         )
-        console.log(file)
         let fileLink = URL.createObjectURL(file)
-        let compressionAnimation = { file: file, path: fileLink }
+        let compressionAnimation = { file: file, path: fileLink, isError: false }
         dispatch({
             type: 'SET_COMPRESSION_ANIMATION',
             payload: compressionAnimation

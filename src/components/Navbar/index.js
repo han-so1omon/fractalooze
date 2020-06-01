@@ -48,11 +48,11 @@ const Navbar = props => {
     return (
         <Styles>
             <nav className='menu'>
-                <a className='buttonLeft' href="https://errcsool.com/projects">
+                <a className='buttonLeft' href="https://errcsool.com/portfolio">
                     <FaHome size={45}/>
                 </a>
                 <div className='title'>
-                    <a href="https://errcsool.com/projects/fractal-image-compression">Fractal Image Compression</a>
+                    <a href="https://errcsool.com/portfolio/fractal-image-compression">Fractal Image Compression</a>
                 </div>
                 <a className='buttonRight' href="https://github.com/han-so1omon/fractalooze">
                     <FaGithubAlt size={45}/>

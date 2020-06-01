@@ -175,9 +175,7 @@ export default function (s) {
     function drawImg(pattern, path) {
         pattern.path = path
         //pattern.img = s.loadImage(path)
-        console.log(s.loadGif)
         pattern.img = s.loadGif(path)
-        console.log(pattern.img)
         pattern.img.play()
     }
     
@@ -188,13 +186,14 @@ export default function (s) {
     s.draw = () => {
 
         s.clear()
-        if (s.state.path) {
+        if (s.state.isError) {
+            //TODO error animation
+        } else if (s.state.path) {
             if (!patterns.compressionAnimation.init ||
                 s.state.path != patterns.compressionAnimation.path) {
                 drawImg(patterns.compressionAnimation, s.state.path)
                 patterns.compressionAnimation.init = true
             }
-            console.log(patterns.compressionAnimation.img)
             s.image(patterns.compressionAnimation.img, 0, 0)
         } else {
             //TODO make this a gif
