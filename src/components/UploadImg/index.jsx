@@ -38,7 +38,7 @@ export default function UploadImg(props) {
         }
         let response = await fetch(
             //"http://192.168.1.23:4567/restapis/ighr1bypdx/test/_user_request_/fractal-compress-func",
-            "http://fractalooze.netlify.app/.netlify/functions/fractal-compress",
+            "https://fractalooze.netlify.app/.netlify/functions/fractal-compress",
             {
                 method: 'POST',
                 mode: 'cors',
