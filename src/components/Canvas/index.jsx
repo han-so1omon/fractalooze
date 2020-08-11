@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
-import styled from "styled-components"
+import { useTheme } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
 
 import { generate } from 'shortid'
 
@@ -12,13 +13,6 @@ import p5Wrapper from '../P5Wrapper'
 const P5CompressionImageWrapper = p5Wrapper(generate())
 const P5CompressionAnimationWrapper = p5Wrapper(generate())
 
-const Styles = styled.div`
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-`
-
 export default function Canvas() {
     const dispatch = useContext(AppDispatchContext)
     const {
@@ -30,24 +24,61 @@ export default function Canvas() {
     let animation = undefined
     if (compressionAnimation) {
         animation = (
-            <img src={compressionAnimation.path}/>
+            <img
+                src={compressionAnimation.path}
+                alt="compressed"
+                style={{
+                    maxWidth: '80%',
+                }}
+            />
         )
     } else {
         animation = (
-                <P5CompressionAnimationWrapper
-                    dispatch={dispatch}
-                    sketch={animationSketchSrc}
-                />
+            <P5CompressionAnimationWrapper
+                dispatch={dispatch}
+                sketch={animationSketchSrc}
+            />
         )
     }
     return (
-        <Styles>
-            <div className="section-content">
+        <Box
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                alignContent: 'space-around',
+                justifyContent: 'center',
+                flexDirection: 'column',
+            }}
+        >
+            <Box
+                 style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    alignContent: 'space-around',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    marginBottom: '25px',
+                }}
+           >
                 { compressionCanvas.showAnimation && animation }
-            </div>
-            <div className="section-content">
-                <img src={compressionCanvas.image.path}/>
-            </div>
-        </Styles>
+            </Box>
+            <Box
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    alignContent: 'space-around',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                }}
+            >
+                <img
+                    src={compressionCanvas.image.path}
+                    alt="original"
+                    style={{
+                        maxWidth: '80%'
+                    }}
+                />
+            </Box>
+        </Box>
     )
 }

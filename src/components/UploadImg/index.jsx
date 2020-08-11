@@ -29,7 +29,7 @@ export default function UploadImg(props) {
         })
         const imgBase64 = await toBase64(image[0])
         if (imgBase64 instanceof Error) {
-        let compressionAnimation = 
+        let compressionAnimation =
             dispatch({
                 type: 'SET_COMPRESSION_ANIMATION',
                 payload: { file: undefined, path: undefined, isError: true }
@@ -68,7 +68,9 @@ export default function UploadImg(props) {
             withIcon={false}
             withLabel={false}
             fileContainerStyle={{boxShadow: 'none'}}
-            buttonStyles={{fontSize: "36px"}}
+            buttonStyles={{
+                fontSize: 'medium',
+            }}
             buttonText={'create thumbnail'}
             onChange={onDrop}
             imgExtension={[".jpg",".gif",".png"]}
